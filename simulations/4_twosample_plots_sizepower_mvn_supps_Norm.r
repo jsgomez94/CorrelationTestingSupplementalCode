@@ -1,0 +1,352 @@
+ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTesting/twosample_jose6/"
+sim_folder <- "mvn_supps"
+sim_type <- c("exps", "full")[2]
+
+init <- TRUE
+output <- NULL
+options(max.print=1000000)
+for (m in c(2,5)) {
+    ##### FIRST STEP: GATHERING THE DATA:
+    for (n in c(40,80,160,320)) {
+    for (p in c(15,30,60,120,240,480,960)) {
+        #n<-60; m<-1; p<-30; s<-"size"
+        nsplit <- 1
+        if (nsplit==1)  {n1<-n ;      n2<-n}
+        if (nsplit==2)  {n1<-n*1.25 ; n2<-n*0.75}
+        if (nsplit==3)  {n1<-n*1.50 ; n2<-n*0.50}
+        #wd<-paste("C:/Users/Yongli Zhang/Documents/hdboot/sim/twosample/mvn/p",p,"/txt/",sep="")
+        wd <- paste0(ROOT_PATH, sim_folder, "/txt_", sim_type, "/")
+        setwd(wd)
+        filelist_size = list.files(pattern = paste("*_m", m, "_n1_", n1, "_n2_", n2, "_p", p, "size", "txt", sep = ""))
+        filelist_power = list.files(pattern = paste("*_m", m, "_n1_", n1, "_n2_", n2, "_p", p, "power", "txt", sep = ""))
+        filelist <- c(filelist_power, filelist_size)
+        print(paste("*_m", m, "_n1_", n1, "_n2_", n2, "_p", p, "txt", sep = ""))
+        print(length(filelist))
+        #assuming tab separated values with a header
+        datalist = lapply(filelist, function(x) read.table(x, header = F))
+        
+        #assuming the same header/columns for all files
+        datafr = do.call("rbind", datalist)
+        head(datafr)
+        datafr[, -(1:13)] <- (datafr[, -(1:13)] < 0.05)
+        
+        tem_o<-aggregate( .~V1+V2+V3+V4+V5,data=datafr,mean)
+        colnames(tem_o) <- c(
+            "n1_col", #1
+            "n2_col", #2
+            "p_col", #3
+            "model_col", #4
+            "sp_col", #5
+            "max_sigma", #6
+            "l1_sigma", #7
+            "F_sigma", #8
+            "l0_sigma", #9
+            "max_rho", #10 
+            "l1_rho", #11
+            "F_rho", #12
+            "l0_rho", #13
+            "Perm_cor1_Fro", "Perm_cor2_Fro", "Perm_cor3_Fro", ## 14,15,16
+            "Perm_cor1_Ope", "Perm_cor2_Ope", "Perm_cor3_Ope", ## 17,18,19
+            "Perm_cor1_Nuc", "Perm_cor2_Nuc", "Perm_cor3_Nuc", ## 20,21,22
+            "Perm_cor1_Max", "Perm_cor2_Max", "Perm_cor3_Max") ## 23,24,25
+        output<-rbind(output,tem_o)    
+    }
+    }
+}
+
+dim(output)
+output <- round(output, 2)
+output_df <- as.data.frame(output)
+
+cov_counter <- 0
+cor_counter <- 0
+
+rm(
+    "datafr", "datalist", "filelist", "filelist_power", "filelist_size", "init", "m", "n",
+    "n1", "n2", "nsplit", "p", "tem_o")
+print(ls())
+## Saving directory
+subfolder_new        <- paste0("results/", sim_folder, "_", sim_type, "/")
+if (!dir.exists(paste0(ROOT_PATH, subfolder_new))) {
+    dir.create(paste0(ROOT_PATH, subfolder_new))
+}
+save.image(
+    file = paste0(ROOT_PATH, "results/",
+    sim_folder, "_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
+
+
+rm(list = ls())
+print(ls())
+
+
+
+
+
+
+
+
+
+#####################################################
+#####################################################
+## COR: Comparing transformations!!!
+#####################################################
+#####################################################
+
+library(tidyverse)
+library(magrittr)
+library(gridExtra)
+
+rm(list = ls())
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", 
+               "#009E73", "#F0E442", "#0072B2", 
+               "#D55E00", "#CC79A7")
+ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTesting/twosample_jose6/"
+sim_folder <- "mvn_supps"
+sim_type <- c("exps", "full")[2]
+load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))
+cov_counter <- cov_counter + 1
+save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, ".RData"))
+print(c(cov_counter, cor_counter))
+ls()
+
+## Saving directory
+subfolder_new        <- paste0("results/", sim_folder, "_", sim_type, "/Transf_comparison/")
+if (!dir.exists(paste0(ROOT_PATH, subfolder_new))) {
+    dir.create(paste0(ROOT_PATH, subfolder_new))
+}
+
+dim(output_df)
+colnames(output_df)
+
+
+method_names <- c(
+    "Perm_cor3_Fro",
+    "Perm_cor2_Fro",
+    "Perm_cor1_Fro"
+    )
+method_names_clean <-  c(
+    "Perm-Cor: Direct Norm",
+    "Perm-Cor: Stabilized",
+    "Perm-Cor: Pseudo-Stab."
+    )
+
+output_cor <- output_df %>%
+    as_tibble() %>%
+
+    mutate(n_col = n1_col, .before = n1_col) %>%
+    
+    select(
+        -ends_with("Nuc"), -ends_with("Ope"), -ends_with("max"),
+        -"n1_col", -"n2_col",
+        -max_sigma, -l1_sigma, -F_sigma, -l0_sigma, 
+        -max_rho, -l1_rho, -F_rho, -l0_rho) %>%
+    
+    pivot_longer(
+        cols          = ends_with("Fro"),
+        names_to      = "method",
+        values_to     = "R_Rate") %>%
+
+    filter(method %in% method_names) %>%
+
+    pivot_wider(
+        names_from = "sp_col",
+        names_prefix = "rejRate_sp",
+        values_from = R_Rate) %>%
+
+    mutate(
+        Size = rejRate_sp0,
+        "Power: Dense Alt." = rejRate_sp2,
+        "Power: Sparse Alt." = rejRate_sp1,
+        "Power Gap: Dense Alt." = rejRate_sp2 - rejRate_sp0,
+        "Power Gap: Sparse Alt." = rejRate_sp1 - rejRate_sp0)
+
+
+###############################
+###############################
+## Creating plots:
+
+## Plot 1: TPR
+for (model_ind in c(2,5)) {
+    file_name <- paste0(
+        subfolder_new,
+        "PowerCorr_model_m", model_ind, "_v", cor_counter, ".pdf")
+    
+    pdf(file_name, width = 9, height = 5)
+
+    p1 <- output_cor %>%
+
+        select(-rejRate_sp0, -rejRate_sp1, -rejRate_sp2, -"Power Gap: Dense Alt.", -"Power Gap: Sparse Alt.") %>%
+
+        mutate(n_name = factor(paste0("n = ", n_col), levels = paste0("n = ", c(40,80,160,320)))) %>%
+        mutate(method = str_replace_all(method, setNames(method_names_clean, method_names))) %>%
+        mutate(method = factor(method, levels = method_names_clean)) %>%
+    
+        filter(model_col == model_ind) %>%
+
+        pivot_longer(
+            cols = c(Size, "Power: Dense Alt.", "Power: Sparse Alt."),
+            names_to = "measure_type",
+            values_to = "measure_val") %>%
+        
+        mutate(measure_type = factor(measure_type, levels = c("Size", "Power: Dense Alt.", "Power: Sparse Alt."))) %>%
+
+        ggplot(aes(x = p_col, y = measure_val)) +
+            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
+            scale_linetype_manual(values = c(3, 4, 1)) +
+            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 1)) +
+            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
+            scale_shape_manual(values = c(5, 13, 19)) +
+            scale_color_manual(values = c("gray50", "gray30", "black")) +
+            facet_grid(rows = vars(n_name), cols = vars(measure_type)) +
+            ylab("Rejection Rate") +
+            xlab("p") +
+            theme(
+                panel.spacing = unit(0.75, "lines"),
+                legend.title = element_blank())
+    print(p1)
+    dev.off()
+
+    
+}
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####################################################
+#####################################################
+## COR: comparing norms (fixed transformation)
+#####################################################
+#####################################################
+
+library(tidyverse)
+library(magrittr)
+library(gridExtra)
+
+rm(list = ls())
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", 
+               "#009E73", "#F0E442", "#0072B2", 
+               "#D55E00", "#CC79A7")
+ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTesting/twosample_jose6/"
+sim_folder <- "mvn_supps"
+sim_type <- c("exps", "full")[2]
+load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))
+cov_counter <- cov_counter + 1
+save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, ".RData"))
+print(c(cov_counter, cor_counter))
+ls()
+
+## Saving directory
+subfolder_new        <- paste0("results/", sim_folder, "_", sim_type, "/Norm_comparison/")
+if (!dir.exists(paste0(ROOT_PATH, subfolder_new))) {
+    dir.create(paste0(ROOT_PATH, subfolder_new))
+}
+
+dim(output_df)
+colnames(output_df)
+
+
+method_names <- c(
+    "Perm_cor1_Ope",
+    "Perm_cor1_Max",
+    "Perm_cor1_Nuc",
+    "Perm_cor1_Fro"
+    )
+method_names_clean <-  c(
+    "Operator (B = 200)",
+    "Entry-Max (B = 200)",
+    "Nuclear (B = 200)",
+    "Frobenius (B = 200)"
+    )
+
+output_cor <- output_df %>%
+    as_tibble() %>%
+
+    mutate(n_col = n1_col, .before = n1_col) %>%
+    
+    select(
+        -contains("cor2"), -contains("cor3"),
+        -"n1_col", -"n2_col",
+        -max_sigma, -l1_sigma, -F_sigma, -l0_sigma, 
+        -max_rho, -l1_rho, -F_rho, -l0_rho) %>%
+    
+    pivot_longer(
+        cols          = contains("cor1"),
+        names_to      = "method",
+        values_to     = "R_Rate") %>%
+
+    filter(method %in% method_names) %>%
+
+    pivot_wider(
+        names_from = "sp_col",
+        names_prefix = "rejRate_sp",
+        values_from = R_Rate) %>%
+
+    mutate(
+        Size = rejRate_sp0,
+        "Power: Dense Alt." = rejRate_sp2,
+        "Power: Sparse Alt." = rejRate_sp1,
+        "Power Gap: Dense Alt." = rejRate_sp2 - rejRate_sp0,
+        "Power Gap: Sparse Alt." = rejRate_sp1 - rejRate_sp0)
+
+
+###############################
+###############################
+## Creating plots:
+
+for (model_ind in c(2,5)) {
+    file_name <- paste0(
+        subfolder_new,
+        "PowerCorr_model_m", model_ind, "_v", cor_counter, ".pdf")
+    
+    pdf(file_name, width = 9, height = 5)
+
+    p1 <- output_cor %>%
+
+        select(-rejRate_sp0, -rejRate_sp1, -rejRate_sp2, -"Power Gap: Dense Alt.", -"Power Gap: Sparse Alt.") %>%
+
+        mutate(n_name = factor(paste0("n = ", n_col), levels = paste0("n = ", c(40,80,160,320)))) %>%
+        mutate(method = str_replace_all(method, setNames(method_names_clean, method_names))) %>%
+        mutate(method = factor(method, levels = method_names_clean)) %>%
+    
+        filter(model_col == model_ind) %>%
+
+        pivot_longer(
+            cols = c(Size, "Power: Dense Alt.", "Power: Sparse Alt."),
+            names_to = "measure_type",
+            values_to = "measure_val") %>%
+        
+        mutate(measure_type = factor(measure_type, levels = c("Size", "Power: Dense Alt.", "Power: Sparse Alt."))) %>%
+
+        ggplot(aes(x = p_col, y = measure_val)) +
+            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
+            scale_linetype_manual(values = c(2, 3, 4, 1)) +
+            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 0.75, 1)) +
+            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
+            scale_shape_manual(values = c(2, 5, 13, 19)) +
+            scale_color_manual(values = c(cbPalette[c(2, 4, 8)], "#000000")) +
+            facet_grid(rows = vars(n_name), cols = vars(measure_type)) +
+            ylab("Rejection Rate") +
+            xlab("p") +
+            theme(
+                panel.spacing = unit(0.75, "lines"),
+                legend.title = element_blank())
+    print(p1)
+    dev.off()
+
+    
+}
+
