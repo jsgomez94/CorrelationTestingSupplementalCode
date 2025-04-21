@@ -1,5 +1,5 @@
 
-ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTesting/twosample_jose6/"
+ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTestingSupplementalCode/simulations/"
 sim_folder <- "mvn_comp"
 sim_type <- c("exps", "full")[2]
 
@@ -100,7 +100,7 @@ rm(list = ls())
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", 
                "#009E73", "#F0E442", "#0072B2", 
                "#D55E00", "#CC79A7")
-ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTesting/twosample_jose6/"
+ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTestingSupplementalCode/simulations/"
 sim_folder <- "mvn_comp"
 sim_type <- c("exps", "full")[2]
 load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))
@@ -229,7 +229,7 @@ rm(list = ls())
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", 
                "#009E73", "#F0E442", "#0072B2", 
                "#D55E00", "#CC79A7")
-ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTesting/twosample_jose6/"
+ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTestingSupplementalCode/simulations/"
 sim_folder <- "mvn_comp"
 sim_type <- c("exps", "full")[2]
 load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))

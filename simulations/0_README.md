@@ -30,6 +30,8 @@ The simulations are run in a linux cluster with SLURM scheduling system.
 
     Ensure that all packages are properly installed by reviewing the directory <code>./req_lib/</code>.
 
+    In the files for processing the simulation results, we use the variable <code>ROOT_PATH</code> to establish the working directory. Before you continue, make sure that this variable is modified to correspond to the directory <code>".../CorrelationTestingSupplementalCode/simulations/"</code> corresponding to the path where the repository was cloned to your environment. Make sure that you replace all instances where <code>ROOT_PATH</code>. This variable is defined 3 different times within each of the files corresponding to the numbers 2,3,4 and 5, for a total of 15 substitutions of the definition of <code>ROOT_PATH</code>. 
+
 2. **Debugging to run mvn_comp:** Due to the large volume of simulations, and potential emerging errors when cloning the repository into a new environment, it may be necessary to perform some debugging rounds and verify that the code runs properly. 
 
     In the linux cluster terminal, enter the directory <code>./simulations/</code>. To ensure that things run smoothly, run the command,
