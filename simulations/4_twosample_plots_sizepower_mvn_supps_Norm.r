@@ -115,7 +115,7 @@ ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTestingSupplementalCo
 sim_folder <- "mvn_supps"
 sim_type <- c("exps", "full")[2]
 load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))
-cov_counter <- cov_counter + 1
+cor_counter <- cor_counter + 1
 save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
 print(c(cov_counter, cor_counter))
 ls()
@@ -255,8 +255,6 @@ ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTestingSupplementalCo
 sim_folder <- "mvn_supps"
 sim_type <- c("exps", "full")[2]
 load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))
-cov_counter <- cov_counter + 1
-save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
 print(c(cov_counter, cor_counter))
 ls()
 

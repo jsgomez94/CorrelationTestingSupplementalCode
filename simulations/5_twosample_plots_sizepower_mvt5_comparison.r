@@ -193,95 +193,6 @@ for (model_ind in c(2,3)) {
     if (!dir.exists(subfolder_new)) {
        dir.create(subfolder_new)
     }
-    file_name1 <- paste0(
-        ROOT_PATH, subfolder_new,
-        "PowerGapCov_model", model_ind, "_v", cov_counter,".pdf")
-    pdf(file_name1, width = 9, height = 5)
-    
-    output_cov_proc <- output_cov %>%
-
-        select(-rejRate_sp0, -rejRate_sp1, -rejRate_sp2, -"Power: Dense Alt.", -"Power: Sparse Alt.") %>%
-
-        mutate(n_name = factor(paste0("n = ", n_col), levels = paste0("n = ", c(40, 80, 160, 320)))) %>%
-        mutate(method = str_replace_all(method, setNames(method_names_clean, method_names))) %>%
-        mutate(method = factor(method, levels = method_names_clean)) %>%
-    
-        filter(model_col == model_ind) %>%
-
-        pivot_longer(
-            cols = c(Size, "Power Gap: Dense Alt.", "Power Gap: Sparse Alt."),
-            names_to = "measure_type",
-            values_to = "measure_val")
-        
-    p1 <- output_cov_proc %>%
-        filter(measure_type == "Size") %>%
-        
-        ggplot(aes(x = p_col, y = measure_val)) +
-            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
-            scale_linetype_manual(values = c(2, 3, 4, 1)) +
-            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 0.75, 1)) +
-            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
-            scale_shape_manual(values = c(2, 5, 13, 19)) +
-            scale_color_manual(values=c(cbPalette[c(2,4,8)], "#000000")) +
-            ylab(bquote(H[0]~ "Rejection Rate")) +
-            xlab("p") + 
-            ylim(-0.1, 1) + 
-            theme(
-                legend.position = "none",
-                strip.text.y = element_blank(),
-                plot.margin = margin(r = 10)) +
-            facet_grid(rows = vars(n_name), cols = vars(measure_type))
-            
-    p2 <- output_cov_proc %>%
-        filter(measure_type == "Power Gap: Dense Alt.") %>%
-        
-        ggplot(aes(x = p_col, y = measure_val)) +
-            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
-            scale_linetype_manual(values = c(2, 3, 4, 1)) +
-            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 0.75, 1)) +
-            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
-            scale_shape_manual(values = c(2, 5, 13, 19)) +
-            scale_color_manual(values=c(cbPalette[c(2,4,8)], "#000000")) +
-            ylab(bquote(H[0]~ "Power-Size Rejection Rate Gap")) +
-            xlab("p") + 
-            ylim(-0.1, 1) + 
-            theme(
-                legend.position = "none",
-                strip.text.y = element_blank(),
-                plot.margin = margin(r = 10)) +
-            facet_grid(rows = vars(n_name), cols = vars(measure_type))
-            
-    p3 <- output_cov_proc %>%
-        filter(measure_type == "Power Gap: Sparse Alt.") %>%
-        
-        ggplot(aes(x = p_col, y = measure_val)) +
-            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
-            scale_linetype_manual(values = c(2, 3, 4, 1)) +
-            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 0.75, 1)) +
-            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
-            scale_shape_manual(values = c(2, 5, 13, 19)) +
-            scale_color_manual(values=c(cbPalette[c(2,4,8)], "#000000")) +
-            xlab("p") +
-            ylim(-0.1, 1) + 
-            theme(
-                axis.title.y = element_blank(),
-                axis.ticks.y = element_blank(),
-                axis.text.y = element_blank(),
-                plot.margin = margin(r = 10),
-                legend.title = element_blank()) +
-            facet_grid(rows = vars(n_name), cols = vars(measure_type))
-
-    p_merged <- grid.arrange(
-        p1, p2, p3,
-        widths = c(2.2, 2.2, 3.6),
-        layout_matrix = rbind(c(1, 2, 3)))
-    print(p_merged)
-    dev.off()
-
-
-
-
-
     file_name2 <- paste0(
         ROOT_PATH, subfolder_new,
         "PowerCov_model", model_ind, "_v", cov_counter,".pdf")
@@ -346,7 +257,7 @@ ROOT_PATH <- "/nas/longleaf/home/jsgomez/github/CorrelationTestingSupplementalCo
 sim_folder <- "mvt5_comp"
 sim_type <- c("exps", "full")[2]
 load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
-cov_counter <- cov_counter + 1
+cor_counter <- cor_counter + 1
 save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
 print(c(cov_counter, cor_counter))
 ls()
@@ -410,95 +321,6 @@ for (model_ind in c(2,3)) {
     if (!dir.exists(subfolder_new)) {
        dir.create(subfolder_new)
     }
-    file_name1 <- paste0(
-        ROOT_PATH, subfolder_new,
-        "PowerGapCorr_model", model_ind, "_v", cor_counter,".pdf")
-    pdf(file_name1, width = 9, height = 5)
-
-    output_cor_proc <- output_cor %>%
-
-        select(-rejRate_sp0, -rejRate_sp1, -rejRate_sp2, -"Power: Dense Alt.", -"Power: Sparse Alt.") %>%
-
-        mutate(n_name = factor(paste0("n = ", n_col), levels = paste0("n = ", c(40,80,160,320)))) %>%
-        mutate(method = str_replace_all(method, setNames(method_names_clean, method_names))) %>%
-        mutate(method = factor(method, levels = method_names_clean)) %>%
-    
-        filter(model_col == model_ind) %>%
-
-        pivot_longer(
-            cols = c(Size, "Power Gap: Dense Alt.", "Power Gap: Sparse Alt."),
-            names_to = "measure_type",
-            values_to = "measure_val")
-
-    
-    p1 <- output_cor_proc %>%
-        filter(measure_type == "Size") %>%
-        
-        ggplot(aes(x = p_col, y = measure_val)) +
-            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
-            scale_linetype_manual(values = c(2, 3, 4, 1)) +
-            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 0.75, 1)) +
-            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
-            scale_shape_manual(values = c(0, 8, 10, 19)) +
-            scale_color_manual(values=c(cbPalette[c(4, 6, 7)], "#000000")) +
-            ylab(bquote(H[0]~ "Rejection Rate")) +
-            xlab("p") + 
-            ylim(-0.1,1) + 
-            theme(
-                legend.position = "none",
-                strip.text.y = element_blank(),
-                plot.margin = margin(r = 10)) +
-            facet_grid(rows = vars(n_name), cols = vars(measure_type))
-            
-    p2 <- output_cor_proc %>%
-        filter(measure_type == "Power Gap: Dense Alt.") %>%
-        
-        ggplot(aes(x = p_col, y = measure_val)) +
-            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
-            scale_linetype_manual(values = c(2, 3, 4, 1)) +
-            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 0.75, 1)) +
-            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
-            scale_shape_manual(values = c(0, 8, 10, 19)) +
-            scale_color_manual(values=c(cbPalette[c(4, 6, 7)], "#000000")) +
-            ylab(bquote(H[0]~ "Power-Size Rejection Rate Gap")) +
-            xlab("p") + 
-            ylim(-0.1, 1) + 
-            theme(
-                legend.position = "none",
-                strip.text.y = element_blank(),
-                plot.margin = margin(r = 10)) +
-            facet_grid(rows = vars(n_name), cols = vars(measure_type))
-            
-    p3 <- output_cor_proc %>%
-        filter(measure_type == "Power Gap: Sparse Alt.") %>%
-        
-        ggplot(aes(x = p_col, y = measure_val)) +
-            geom_line(aes(col = method, linetype = method, linewidth = method), alpha = 1) +
-            scale_linetype_manual(values = c(2, 3, 4, 1)) +
-            scale_discrete_manual("linewidth", values = c(0.75, 0.75, 0.75, 1)) +
-            geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
-            scale_shape_manual(values = c(0, 8, 10, 19)) +
-            scale_color_manual(values=c(cbPalette[c(4, 6, 7)], "#000000")) +
-            xlab("p") +
-            ylim(-0.1, 1) + 
-            theme(
-                axis.title.y = element_blank(),
-                axis.ticks.y = element_blank(),
-                axis.text.y = element_blank(),
-                plot.margin = margin(r = 10),
-                legend.title = element_blank()) +
-            facet_grid(rows = vars(n_name), cols = vars(measure_type))
-
-    p_merged <- grid.arrange(
-        p1, p2, p3,
-        widths = c(2.15, 2.15, 3.7),
-        layout_matrix = rbind(c(1, 2, 3)))
-    print(p_merged)
-    dev.off()
-
-
-
-
 
     file_name2 <- paste0(
         ROOT_PATH, subfolder_new,
