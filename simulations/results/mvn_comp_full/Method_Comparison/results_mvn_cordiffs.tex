@@ -1,0 +1,54 @@
+\documentclass[10pt,a4paper]{article}
+ \usepackage[utf8]{inputenc}
+ \usepackage[T1]{fontenc}
+ \usepackage{amsmath}
+ \usepackage{amssymb}
+ \usepackage{graphicx}
+ \usepackage{multirow}
+ \usepackage{rotating}
+ \usepackage{pdflscape}
+ \usepackage{lmodern}
+ \usepackage{siunitx}
+ \usepackage{booktabs}
+ \usepackage{etoolbox}
+ \newcommand{\Rr}{\mathrm{R}}  
+
+ \begin{document}
+
+
+ \begin{table}[!htbp]
+ \sisetup{detect-weight,mode=text}
+ \renewrobustcmd{\bfseries}{\fontseries{b}\selectfont}
+ \renewrobustcmd{\boldmath}{}
+ \newrobustcmd{\B}{\bfseries}
+ \addtolength{\tabcolsep}{-4.1pt}
+
+
+ \begin{center} 
+ \resizebox{\linewidth}{!}{% 
+ \begin{tabular}{| c  c |  c  c  c  c  c  |  c  c  c  c  c  |  c  c  c  c  c  | } \hline 
+	\multirow{2}{*}{Model} & \multirow{2}{*}{Type} & \multicolumn{5}{c|}{ $\|\Rr_{1} - \Rr_{2}\|_F$ } & \multicolumn{5}{c|}{ $\|\Rr_{1} - \Rr_{2}\|_0$ } & \multicolumn{5}{c|}{ $\|\Rr_{1} - \Rr_{2}\|_{\max}$ }  \\ 
+	 & & 60 & 120 & 240 & 480 & 960 & 60 & 120 & 240 & 480 & 960 & 60 & 120 & 240 & 480 & 960\\ \hline\hline 
+\multicolumn{2}{|c|}{} & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } \\ 
+	\multirow{2}{*}{Model 1} & Sparse & 2.83 & 2.88 & 2.9 & 2.95 & 2.94 & 8 & 8 & 8 & 8 & 8 & 0.82 & 0.83 & 0.83 & 0.84 & 0.84\\ 
+ & Dense & 0.54 & 2.18 & 8.74 & 35.04 & 140.32 & 3540 & 14280 & 57360 & 229920 & 920640 & 0.01 & 0.01 & 0.01 & 0.01 & 0.01\\ 
+\multicolumn{2}{|c|}{} & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } \\ 
+	\multirow{2}{*}{Model 2} & Sparse & 3.22 & 3.33 & 3.37 & 3.4 & 3.41 & 8 & 8 & 8 & 8 & 8 & 0.91 & 0.92 & 0.93 & 0.93 & 0.93\\ 
+ & Dense & 0.71 & 2.94 & 12 & 48.83 & 197.9 & 3540 & 14280 & 57360 & 229920 & 920640 & 0.03 & 0.03 & 0.03 & 0.03 & 0.03\\ 
+\multicolumn{2}{|c|}{} & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } \\ 
+	\multirow{2}{*}{Model 3} & Sparse & 2.72 & 2.8 & 2.85 & 2.88 & 2.89 & 8 & 8 & 8 & 8 & 8 & 0.83 & 0.85 & 0.85 & 0.86 & 0.86\\ 
+ & Dense & 0.9 & 3.68 & 15 & 60.88 & 246.11 & 3540 & 14280 & 57360 & 229920 & 920640 & 0.03 & 0.03 & 0.03 & 0.03 & 0.03\\ 
+\multicolumn{2}{|c|}{} & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } \\ 
+	\multirow{2}{*}{Model 4} & Sparse & 2.58 & 2.68 & 2.74 & 2.77 & 2.77 & 8 & 8 & 8 & 8 & 8 & 0.81 & 0.83 & 0.83 & 0.84 & 0.84\\ 
+ & Dense & 0.85 & 3.49 & 14.11 & 57.06 & 229.81 & 3540 & 14280 & 57360 & 229920 & 920640 & 0.03 & 0.03 & 0.03 & 0.03 & 0.03\\ 
+\multicolumn{2}{|c|}{} & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } \\ 
+	\multirow{2}{*}{Model 5} & Sparse & 2.99 & 3.06 & 3.12 & 3.13 & 3.14 & 8 & 8 & 8 & 8 & 8 & 0.87 & 0.89 & 0.89 & 0.9 & 0.9\\ 
+ & Dense & 1.27 & 5.22 & 20.83 & 82.67 & 328.99 & 3540 & 14280 & 57360 & 229920 & 920640 & 0.04 & 0.04 & 0.04 & 0.04 & 0.04\\ 
+\multicolumn{2}{|c|}{} & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } & \multicolumn{5}{c|}{ } \\ 
+ \hline\hline 
+ \end{tabular}} 
+ \end{center} 
+ \end{table}
+
+
+ \end{document}
