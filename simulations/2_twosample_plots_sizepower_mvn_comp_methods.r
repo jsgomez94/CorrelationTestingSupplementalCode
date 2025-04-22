@@ -278,16 +278,12 @@ method_names <- c(
     "Cai-Liu-Xia",
     "Zheng-EtAl-2020",
     "Perm-cov2_BB"
-    #"Perm-cov2_B200",
-    #"Perm-cov2_B50"
     )
 method_names_clean <-  c(
     "Li & Chen (2012)",
     "Cai, Liu & Xia (2013)",
     "Zheng et al. (2020)",
-    "Perm-Cov (B = 500)"
-    #"Perm-Cov; B = 200",
-    #"Perm-Cov; B = 50"
+    "Perm-Cov (B = 1000)"
     )
 
 output_cov <- output_df %>%
@@ -334,12 +330,6 @@ for (model_ind in 1:5) {
     file_name1 <- paste0(
         ROOT_PATH, subfolder_new,
         "PowerGapCov_model_m", model_ind, "_v", cov_counter,".pdf")
-    
-    
-    # pdf(file_name1, width = 9.5, height = 6)
-    # pdf(file_name1, width = 7.5, height = 5)
-    # pdf(file_name1, width = 7, height = 4)
-    # pdf(file_name1, width = 9, height = 4)
     pdf(file_name1, width = 9, height = 5)
     
     output_cov_proc <- output_cov %>%
@@ -391,8 +381,6 @@ for (model_ind in 1:5) {
             ylim(-0.1, 1) + 
             theme(
                 legend.position = "none",
-                #axis.ticks.y = element_blank(),
-                #axis.text.y = element_blank(),
                 strip.text.y = element_blank(),
                 plot.margin = margin(r = 10)) +
             facet_grid(rows = vars(n_name), cols = vars(measure_type))
@@ -407,7 +395,6 @@ for (model_ind in 1:5) {
             geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
             scale_shape_manual(values = c(2, 5, 13, 19)) +
             scale_color_manual(values=c(cbPalette[c(2,4,8)], "#000000")) +
-            #ylab(bquote(H[0]~ "Power-Size Rejection Rate Gap")) +
             xlab("p") +
             ylim(-0.1, 1) + 
             theme(
@@ -433,11 +420,6 @@ for (model_ind in 1:5) {
     file_name2 <- paste0(
         ROOT_PATH, subfolder_new,
         "PowerCov_model_m", model_ind, "_v", cov_counter,".pdf")
-    
-    # pdf(file_name2, width = 9.5, height = 6)
-    # pdf(file_name2, width = 7.5, height = 5)
-    # pdf(file_name2, width = 7, height = 4)
-    # pdf(file_name2, width = 9, height = 4)
     pdf(file_name2, width = 9, height = 5)
     
     p1 <- output_cov %>%
@@ -516,17 +498,13 @@ method_names <- c(
     "Zheng-EtAl_sum",
     "Zheng-EtAl_max",
     "Perm-corr1_ratio_BB"
-    #"Perm-corr1_ratio_B200",
-    #"Perm-corr1_ratio_B50"
-    )  ## IPC-HD
+    )
 method_names_clean <-  c(
-    "Cai & Zhang (2016)", # 1
-    "Zheng et al. (2019) (sum)", # 2
-    "Zheng et al. (2019) (max)", # 3
-    "Perm-Corr (B = 500)" # 4
-    #"Perm-Corr; B = 200", # 5
-    #"Perm-Corr; B = 50"
-    ) # 6
+    "Cai & Zhang (2016)",
+    "Zheng et al. (2019) (sum)",
+    "Zheng et al. (2019) (max)",
+    "Perm-Corr (B = 1000)"
+    )
 
 
 output_cor <- output_df %>%
@@ -572,11 +550,6 @@ for (model_ind in 1:5) {
     file_name1 <- paste0(
         ROOT_PATH, subfolder_new,
         "PowerGapCorr_model_m", model_ind, "_v", cor_counter,".pdf")
-    
-    # pdf(file_name1, width = 9.5, height = 6)
-    # pdf(file_name1, width = 7.5, height = 5)
-    # pdf(file_name1, width = 7, height = 4)
-    # pdf(file_name1, width = 9, height = 4)
     pdf(file_name1, width = 9, height = 5)
 
     output_cor_proc <- output_cor %>%
@@ -629,8 +602,6 @@ for (model_ind in 1:5) {
             ylim(-0.1, 1) + 
             theme(
                 legend.position = "none",
-                #axis.ticks.y = element_blank(),
-                #axis.text.y = element_blank(),
                 strip.text.y = element_blank(),
                 plot.margin = margin(r = 10)) +
             facet_grid(rows = vars(n_name), cols = vars(measure_type))
@@ -645,7 +616,6 @@ for (model_ind in 1:5) {
             geom_point(aes(col = method, shape = method), size = 2.2, alpha = 1) +
             scale_shape_manual(values = c(0, 8, 10, 19)) +
             scale_color_manual(values=c(cbPalette[c(4, 6, 7)], "#000000")) +
-            #ylab(bquote(H[0]~ "Power-Size Rejection Rate Gap")) +
             xlab("p") +
             ylim(-0.1, 1) + 
             theme(
@@ -671,11 +641,6 @@ for (model_ind in 1:5) {
     file_name2 <- paste0(
         ROOT_PATH, subfolder_new,
         "PowerCorr_model_m", model_ind, "_v", cor_counter,".pdf")
-    
-    # pdf(file_name2, width = 9.5, height = 6)
-    # pdf(file_name2, width = 7.5, height = 5)
-    # pdf(file_name2, width = 7, height = 4)
-    # pdf(file_name2, width = 9, height = 4)
     pdf(file_name2, width = 9, height = 5)
 
     p1 <- output_cor %>%

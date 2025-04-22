@@ -264,11 +264,11 @@ method_names <- c(
     "Perm-corr1_ratio_B50",
     "Perm-corr1_ratio_B200",
     "Perm-corr1_ratio_BB"
-    )  ## IPC-HD
+    )  
 method_names_clean <-  c(
-    "Perm-Corr (B = 50)", # 4
-    "Perm-Corr (B = 200)", # 5
-    "Perm-Corr (B = 500)") # 6
+    "Perm-Corr (B = 50)",
+    "Perm-Corr (B = 200)",
+    "Perm-Corr (B = 1000)") 
 
 
 output_cor <- output_df %>%

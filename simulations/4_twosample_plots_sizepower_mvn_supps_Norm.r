@@ -9,12 +9,10 @@ for (m in c(2,5)) {
     ##### FIRST STEP: GATHERING THE DATA:
     for (n in c(40,80,160,320)) {
     for (p in c(15,30,60,120,240,480,960)) {
-        #n<-60; m<-1; p<-30; s<-"size"
         nsplit <- 1
         if (nsplit==1)  {n1<-n ;      n2<-n}
         if (nsplit==2)  {n1<-n*1.25 ; n2<-n*0.75}
         if (nsplit==3)  {n1<-n*1.50 ; n2<-n*0.50}
-        #wd<-paste("C:/Users/Yongli Zhang/Documents/hdboot/sim/twosample/mvn/p",p,"/txt/",sep="")
         wd <- paste0(ROOT_PATH, sim_folder, "/txt_", sim_type, "/")
         setwd(wd)
         filelist_size = list.files(pattern = paste("*_m", m, "_n1_", n1, "_n2_", n2, "_p", p, "size", "txt", sep = ""))
