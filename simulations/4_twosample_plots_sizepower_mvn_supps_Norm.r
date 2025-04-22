@@ -65,18 +65,31 @@ rm(
     "datafr", "datalist", "filelist", "filelist_power", "filelist_size", "init", "m", "n",
     "n1", "n2", "nsplit", "p", "tem_o")
 print(ls())
-## Saving directory
-subfolder_new        <- paste0("results/", sim_folder, "_", sim_type, "/")
+
+
+## Saving results:
+## Ceating directories:
+folder_new      <- paste0("results/")
+if (!dir.exists(paste0(ROOT_PATH, folder_new))) {
+    dir.create(paste0(ROOT_PATH, folder_new))
+}
+subfolder_new   <- paste0(folder_new, sim_folder, "_", sim_type, "/")
 if (!dir.exists(paste0(ROOT_PATH, subfolder_new))) {
     dir.create(paste0(ROOT_PATH, subfolder_new))
 }
+subfolder2_new  <- paste0(subfolder_new, "Method_Comparison/")
+if (!dir.exists(paste0(ROOT_PATH, subfolder2_new))) {
+    dir.create(paste0(ROOT_PATH, subfolder2_new))
+}
+
+## Saving Outputs:
 save.image(
-    file = paste0(ROOT_PATH, "results/",
-    sim_folder, "_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
+    file = paste0(ROOT_PATH, subfolder_new, "results_", sim_folder, "_", sim_type,".RData"))
 
 
 rm(list = ls())
 print(ls())
+
 
 
 
@@ -105,7 +118,7 @@ sim_folder <- "mvn_supps"
 sim_type <- c("exps", "full")[2]
 load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))
 cov_counter <- cov_counter + 1
-save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, ".RData"))
+save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
 print(c(cov_counter, cor_counter))
 ls()
 
@@ -245,7 +258,7 @@ sim_folder <- "mvn_supps"
 sim_type <- c("exps", "full")[2]
 load(paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, "_", sim_type, ".RData"))
 cov_counter <- cov_counter + 1
-save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_",sim_folder, ".RData"))
+save.image(file = paste0(ROOT_PATH, "results/", sim_folder,"_", sim_type, "/results_", sim_folder, "_", sim_type,".RData"))
 print(c(cov_counter, cor_counter))
 ls()
 
