@@ -49,7 +49,7 @@ full_simulation <- function(id_task, run_id, run_type) {
     cor_ZhengEtAl2019_pv <- cor_ZhengEtAl2019_fun(x1, x2)[c(2, 4)]
     
     ## Our proposals:
-    zhang_pv <- zhang_fun(x1, x2, 200)
+    zhang_pv <- zhang_fun(x1, x2, 500)
 
     cov_zhang_pvB1000 <- c(zhang_pv[4:9])#, zhang_trunc_pv[-(1:2)])
     cor_zhang_pvB1000 <- c(zhang_pv[1:3])#, zhang_trunc_pv[1:2])
