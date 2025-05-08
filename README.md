@@ -1,6 +1,8 @@
 # CorrTestingCodeSubmission
 This repository contains all the proof-read and commented code to recreate simulations, figures and tables of the paper "Effective Permutation Tests for Differences Across Multiple High-Dimensional Correlation Matrices."
 
+The repository can also be accessed through the github link: <code>https://github.com/jsgomez94/CorrelationTestingSupplementalCode.git</code>
+
 Here, we simply describe the overall structure of the repository. To fully reproduce the results, further instructions are necessary. For this end, we provide further README files when necessary. The structure is the following:
 
 - <code>./real_data/</code>: directory containing the code and data for performing the real data analysis we describe in Section 6 of our main paper. We provide a README file providing further instructions on how to replicate the real data analysis. ***NOTE***: We do not provide the code and data for reproducing the analysis of brain activation measurements for Alzheimer's patients studied in Section 5.2 of our paper, due to privacy concerns regarding our dataset.
